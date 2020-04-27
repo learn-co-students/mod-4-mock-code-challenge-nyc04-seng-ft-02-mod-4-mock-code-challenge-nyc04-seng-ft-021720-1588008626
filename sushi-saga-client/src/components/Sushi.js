@@ -10,11 +10,11 @@ const Sushi = (props) => {
           false ?
             null
           :
-            <img src={/* Give me an image source! */ } width="100%" />
+            <img src={props.img} width="100%" alt={props.name} />
         }
       </div>
       <h4 className="sushi-details">
-        {/* Give me a name! */} - ${/* Give me a price! */}
+        {props.name} - ${props.price}
       </h4>
     </div>
   )
