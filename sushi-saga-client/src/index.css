@@ -11,16 +11,23 @@ body {
   grid-auto-rows: minmax(100px, auto);
   align-items: center;
   grid-template-areas: 
-      ". . . . ."
+      ". wd sp . ."
       ". bt bt bt ."
       ". . rm . ."
       ". tb tb tb .";
 }
 
-
 .remaining {
   grid-area: rm;
   margin: auto;
+}
+
+.ATM {
+  grid-area: wd;
+}
+
+.spent {
+  grid-area: sp;
 }
 
 .plate {
