@@ -3,21 +3,27 @@ import React, { Fragment } from 'react'
 const Sushi = (props) => {
   return (
     <div className="sushi">
-      <div className="plate" 
-           onClick={/* Give me a callback! */ null}>
-        { 
-          /* Tell me if this sushi has been eaten! */ 
-          false ?
-            null
-          :
-            <img src={/* Give me an image source! */ } width="100%" />
-        }
-      </div>
+    { props.consumed.includes(props.sushiObj)? 
+    <div className="plate">
+    </div>:
+    <div className="plate" 
+    onClick={() => props.eat(props.sushiObj)}>
+    <img src= {props.sushiObj.img_url}width="100%" />
+    </div>
+      }
       <h4 className="sushi-details">
-        {/* Give me a name! */} - ${/* Give me a price! */}
+        {props.sushiObj.name} - ${props.sushiObj.price}
       </h4>
     </div>
   )
 }
 
 export default Sushi
+
+// { 
+//   /* Tell me if this sushi has been eaten! */ 
+//   false ?
+//     null
+//   :
+//     <img src={props.sushi.img_url } width="100%" />
+// }

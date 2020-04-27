@@ -11,17 +11,21 @@ const Table = (props) => {
   return (
     <Fragment>
       <h1 className="remaining">
-        You have: ${ /* Give me how much money I have left */ } remaining!
+        You have: ${props.balance} remaining!
+
+        <form onSubmit ={props.update}>
+        <label>
+          Balance Update!:
+          <input type="text" name="balance" value={props.wantedBalance} onChange={props.onChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+      
       </h1>
       <div className="table">
         <div className="stack">
           {
-            /* 
-               renderPlates takes an array 
-               and renders an empty plate
-               for every element in the array
-            */
-            renderPlates([])
+            renderPlates(props.consumed)
           }
         </div>
       </div>
