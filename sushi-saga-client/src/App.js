@@ -11,7 +11,8 @@ state = {
   sushis : [],
   page: 0,
   balance: 100,
-  sushiEaten: []
+  sushiEaten: [],
+  wantedBalance: 0
 }
 
 componentDidMount(){
@@ -31,7 +32,9 @@ renderSushiPage = () => {
 sushiNextPage = () =>{
 
   if((this.state.page * 4) === (this.state.sushis.length-4)){
-    return null
+    this.setState({
+      page: 0
+    })
   }
   else{
   this.setState((prevState)=>({
@@ -54,8 +57,20 @@ onClickSushiEat = (sushi) =>{
     balance: prevState.balance - sushi.price
   }))
 }
+}
 
+onClickBalanceUpdate = (e) =>{
+  e.preventDefault()
+  this.setState(({
+    balance: this.state.wantedBalance
+  }))}
 
+onChangeBalanceUpdate = (e) =>{
+  if(this.state.wantedBalance >= 0){
+  this.setState(({
+    wantedBalance: parseInt(e.target.value)|| 0
+  }))
+  }
 }
 
 
@@ -66,8 +81,7 @@ onClickSushiEat = (sushi) =>{
     return (
       <div className="app">
         <SushiContainer sushi = {this.renderSushiPage} onClick = {this.sushiNextPage} eat = {this.onClickSushiEat} consumed = {this.state.sushiEaten} />
-
-        <Table balance = {this.state.balance} consumed={this.state.sushiEaten}/>
+        <Table balance = {this.state.balance} consumed={this.state.sushiEaten} update={this.onClickBalanceUpdate} wantedBalance ={this.state.wantedBalance} onChange={this.onChangeBalanceUpdate}/>
       </div>
     );
   }
