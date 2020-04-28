@@ -3,7 +3,7 @@ import React from 'react';
 class Wallet extends React.Component{
 
 	state = {
-		amountToAdd: null
+		amountToAdd: ''
 	}
 
 	handleAmountChange = (event) => {

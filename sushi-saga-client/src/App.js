@@ -9,28 +9,63 @@ const API = "http://localhost:3000/sushis"
 class App extends Component {
 
   state = {
+    sushi: [],
+    sushiLoaded: false,
     moneyInWallet: 0,
-    platesEaten: []
+  }
+
+  componentDidMount() {
+    this.fetchSushi();
+    this.addMoneyToWallet(250);  
   }
 
   render() {
+
+    const platesEaten = this.state.sushi.filter(sushi => sushi.eaten)
+
     return (
       <div className="app">
         <SushiContainer 
-          api={API} 
+          sushi={this.state.sushi}
+          sushiLoaded={this.state.sushi}
           attemptToChargeWallet={this.attemptToChargeWallet}
+          eatSushi={this.eatSushi}
           />
         <Table 
           moneyInWallet={this.state.moneyInWallet} 
-          platesEaten={this.state.platesEaten}
+          platesEaten={platesEaten}
           />
         <Wallet addMoneyToWallet={this.addMoneyToWallet} />
       </div>
     );
   }
 
-  componentDidMount() {
-    this.addMoneyToWallet(250);  
+  fetchSushi() {
+    fetch(API)
+      .then(r => r.json())
+      .then(fetchedSushi => this.setState({ sushi: fetchedSushi, sushiLoaded: true }));
+  }  
+
+  eatSushi = (sushi) => {
+    // only proceed is sushi hasn't already been eaten
+    if (!sushi.eaten) {
+      // attempt to buy the sushi
+      if (this.attemptToChargeWallet(sushi.price)) {
+        console.log('Eating', sushi.name);
+        // set the sushi as already having been eaten
+        const newSushiArray = this.state.sushi.map(sushiInArray => {
+          if (sushiInArray === sushi) {
+            sushiInArray.eaten = true;
+          }
+          return sushiInArray;
+        })
+        this.setState({ sushi: newSushiArray });
+      } else {
+        console.log('Not enough money for', sushi.name);
+      }
+    } else {
+      console.log('already eaten')
+    }
   }
 
   addMoneyToWallet = (amount) => {
@@ -41,8 +76,7 @@ class App extends Component {
   attemptToChargeWallet = (amount) => {
     if (this.state.moneyInWallet >= amount){
       const newValue = this.state.moneyInWallet - amount;
-      const newPlateArray = this.state.platesEaten.concat(['plate'])
-      this.setState({ moneyInWallet: newValue, platesEaten: newPlateArray });
+      this.setState({ moneyInWallet: newValue });
       return true;
     } else {
       return false;
